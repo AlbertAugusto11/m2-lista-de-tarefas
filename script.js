@@ -16,7 +16,6 @@ function renderElements(elements){
   for(let i=0;i<lis.length;i++){
     lis[i].remove();
   }
-
   let obj = {};
   for(let i=0;i<elements.length;i++){
     obj = elements[i];
@@ -53,7 +52,7 @@ function createTaskItem(obj){
   newP.innerText = obj.title;
   newButton.classList.add("task__button--remove-task");
   newButton.addEventListener("click",function(){
-    newIten.remove();
+  newIten.remove();
   })
 }
 
@@ -62,10 +61,28 @@ buttonAddTasks.addEventListener("click",function(event){
   event.preventDefault();
   const inputTitle = document.querySelector("#input_title");
   const inputSelect = document.querySelector(".form__input--priority");
-  const obj = {title: inputTitle.value, type: inputSelect.value};
-  //tasks.push(obj); inves de dar push no array, e chamar a function renderElements melhor é usar a forma abaixo;
+  let obj = {title: inputTitle.value, type: inputSelect.value};
+  tasks.push(obj);
   createTaskItem(obj);
   inputTitle.value = "";
   inputSelect.value = "";
-})
+});
 
+const searchTasks = document.querySelector(".header__input--search-input__box");
+searchTasks.addEventListener("input",function(event){
+  let search = event.target.value.toLowerCase();
+  const lis = document.querySelectorAll("li");
+  for(let i=0;i<lis.length;i++){
+    let li = lis[i].textContent.toLowerCase();
+    if(li.includes(search)){
+      lis[i].style.display = "flex";
+    }else{
+      lis[i].style.display = "none";
+    }
+  }
+});
+
+const refreshPage = document.querySelector(".header__title");
+refreshPage.addEventListener("click",function(){
+  window.location.reload();
+})
