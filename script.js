@@ -1,60 +1,63 @@
 const tasks = [
-  {title: "Comprar comida para o gato", type: "Urgente"},
-  {title: "Consertar Computador", type: "Importante"},
-  {title: "Beber água", type: "Normal"},
-  {title: "Enviar relatório trimestral", type: "Importante"},
-  {title: "Fazer exercícios físicos", type: "Normal"},
-  {title: "Agendar consulta médica", type: "Urgente"},
-  {title: "Ler pelo menos um capítulo de um livro", type: "Normal"},
-  {title: "Limpar a despensa", type: "Importante"},
-  {title: "Pagar a conta de energia", type: "Urgente"},
-  {title: "Assistir a um documentário interessante", type: "Normal"},
+    {title: "Comprar comida para o gato", type: "Urgente"},
+    {title: "Consertar Computador", type: "Importante"},
+    {title: "Beber água", type: "Normal"},
+    {title: "Enviar relatório trimestral", type: "Importante"},
+    {title: "Fazer exercícios físicos", type: "Normal"},
+    {title: "Agendar consulta médica", type: "Urgente"},
+    {title: "Ler pelo menos um capítulo de um livro", type: "Normal"},
+    {title: "Limpar a despensa", type: "Importante"},
+    {title: "Pagar a conta de energia", type: "Urgente"},
+    {title: "Assistir a um documentário interessante", type: "Normal"},
 ];
-
-function renderElements(elements){
-  const lis = document.querySelectorAll("li");
-  for(let i=0;i<lis.length;i++){
-    lis[i].remove();
-  }
-  let obj = {};
-  for(let i=0;i<elements.length;i++){
-    obj = elements[i];
-    createTaskItem(obj);
-  }
+  
+function renderElements(list){
+    const ul = document.querySelector(".tasks__list");
+    const lis = document.querySelectorAll("li");
+    for(let i=0;i<lis.length;i++){
+        lis[i].remove();
+    }
+    let obj = {};
+    for(let i=0;i<tasks.length;i++){
+        obj = tasks[i];
+        ul.appendChild(createTaskItem(obj));
+    }
 }
 renderElements(tasks);
 
 function createTaskItem(obj){
-  const newIten = document.createElement("li");
-  const newDiv = document.createElement("div");
-  const newSpan = document.createElement("span");
-  const newP = document.createElement("p");
-  const newButton = document.createElement("button");
+    const li = document.createElement("li");
+    const div = document.createElement("div");
+    const span = document.createElement("span");
+    const p = document.createElement("p");
+    const button = document.createElement("button");
+    
+    li.appendChild(div);
+    li.appendChild(button);
+    div.appendChild(span);
+    div.appendChild(p);
 
-  const ul = document.querySelector(".tasks__list");
+    li.classList.add("task__item");
+    div.classList.add("task-info__container");
+    button.classList.add("task__button--remove-task");
+    button.addEventListener("click",function(){
+        let position = tasks.indexOf(obj);
+        tasks.splice(position,1);
+        renderElements(tasks);
+    });
 
-  ul.appendChild(newIten);
-  newIten.appendChild(newDiv);
-  newIten.appendChild(newButton);
-  newDiv.appendChild(newSpan);
-  newDiv.appendChild(newP);
+    if(obj.type.toLowerCase() == "urgente"){
+        span.classList.add("task-type-span-urgent");
+    }else if(obj.type.toLowerCase() == "importante"){
+        span.classList.add("task-type-span-important");
+    }else if(obj.type.toLowerCase() == "normal"){
+        span.classList.add("task-type-span-normal");
+    }
+    p.classList.add("p");
+    p.innerText = obj.title;
 
-  newIten.classList.add("task__item");
-  newDiv.classList.add("task-info__container");
-  if(obj.type.toLowerCase() == "urgente"){
-    newSpan.classList.add("task-type-span-urgent");
-  }else if(obj.type.toLowerCase() == "importante"){
-    newSpan.classList.add("task-type-span-important");
-  }else if(obj.type.toLowerCase() == "normal"){
-    newSpan.classList.add("task-type-span-normal");
-  }
-  newP.classList.add("p");
-  newP.innerText = obj.title;
-  newButton.classList.add("task__button--remove-task");
-  newButton.addEventListener("click",function(){
-  newIten.remove();
-  })
-}
+    return li;
+};
 
 const buttonAddTasks = document.querySelector(".form__button--add-task");
 buttonAddTasks.addEventListener("click",function(event){
@@ -63,7 +66,7 @@ buttonAddTasks.addEventListener("click",function(event){
   const inputSelect = document.querySelector(".form__input--priority");
   let obj = {title: inputTitle.value, type: inputSelect.value};
   tasks.push(obj);
-  createTaskItem(obj);
+  renderElements();
   inputTitle.value = "";
   inputSelect.value = "";
 });
@@ -82,7 +85,3 @@ searchTasks.addEventListener("input",function(event){
   }
 });
 
-const refreshPage = document.querySelector(".header__title");
-refreshPage.addEventListener("click",function(){
-  window.location.reload();
-})

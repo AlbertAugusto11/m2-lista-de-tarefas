@@ -37,11 +37,6 @@ body{
     color: #3b5bdb;
 }
 
-.header__title:hover{
-    cursor: pointer;
-    font-size: 30px;
-}
-
 .header__input--search-input__box{
     width: 400px;
     height: 35px;
