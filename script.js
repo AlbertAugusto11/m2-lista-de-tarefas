@@ -66,7 +66,7 @@ buttonAddTasks.addEventListener("click",function(event){
   const inputSelect = document.querySelector(".form__input--priority");
   let obj = {title: inputTitle.value, type: inputSelect.value};
   tasks.push(obj);
-  renderElements();
+  renderElements(tasks);
   inputTitle.value = "";
   inputSelect.value = "";
 });
